@@ -1,0 +1,58 @@
+{
+    "family": "prefect-agent",
+    "requiresCompatibilities": ["FARGATE"],
+    "networkMode": "awsvpc",
+    "cpu": "512",
+    "memory": "1024",
+    "taskRoleArn": "arn:aws:iam::029864677731:role/prefect-ecs",
+    "executionRoleArn": "arn:aws:iam::029864677731:role/prefect-ecs",
+    "containerDefinitions": [{
+        "name": "prefect-agent",
+        "image": "prefecthq/prefect:latest-python3.9",
+        "essential": true,
+        "command": ["prefect", "agent", "ecs", "start", "--env", "PREFECT__CLOUD_USE_LOCAL_SECRETS=false"],
+        "environment": [{
+                "name": "AWS_ACCESS_KEY_ID",
+                "value": "AKIAQN5AS2FRZJHJVAGH"
+            },
+            {
+                "name": "AWS_SECRET_ACCESS_KEY",
+                "value": "Yy4OUQIau8i/2RXNJp4aExGsRXeCN5xDB/FgT/1N"
+            },
+            {
+                "name": "REGION",
+                "value": ""
+            },
+            {
+                "name": "PREFECT__CLOUD__USE_LOCAL_SECRETS",
+                "value": "true"
+            },
+            {
+                "name": "PREFECT__CLOUD__API_KEY",
+                "value": "pcu_7OjczNXNKvMd38lbeUH8HPakQ1o2GS4nvsbh"
+            },
+            {
+                "name": "PREFECT__CLOUD__AGENT__LABELS",
+                "value": "['label1', 'label2']"
+            },
+            {
+                "name": "PREFECT__CLOUD__AGENT__LEVEL",
+                "value": "INFO"
+            },
+            {
+                "name": "PREFECT__CLOUD__API",
+                "value": "https://api.prefect.io"
+            }
+
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/prefect-agent",
+                "awslogs-region": "us-east-1",
+                "awslogs-stream-prefix": "ecs",
+                "awslogs-create-group": "true"
+            }
+        }
+    }]
+}
